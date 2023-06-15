@@ -90,6 +90,7 @@ extension QuoteTableViewController: SKPaymentTransactionObserver {
                 // user payment successful
                 print("Transaction successful!")
                 SKPaymentQueue.default().finishTransaction(transaction)
+                showPremiumQuotes()
             } else if transaction.transactionState == .failed {
                 // payment failed
                 print("Transaction failed!")
@@ -100,5 +101,10 @@ extension QuoteTableViewController: SKPaymentTransactionObserver {
                 SKPaymentQueue.default().finishTransaction(transaction)
             }
         }
+    }
+    
+    func showPremiumQuotes() {
+        quotesToShow.append(contentsOf: premiumQuotes)
+        tableView.reloadData()
     }
 }
