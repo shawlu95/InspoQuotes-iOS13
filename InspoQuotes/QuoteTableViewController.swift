@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 
 class QuoteTableViewController: UITableViewController {
     
@@ -28,6 +29,8 @@ class QuoteTableViewController: UITableViewController {
         "Believe in yourself, take on your challenges, dig deep within yourself to conquer fears. Never let anyone bring you down. You got to keep going. – Chantal Sutherland"
     ]
 
+    let productID = "com.shawlu95.InspoQuotes.Premium"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,6 +73,13 @@ class QuoteTableViewController: UITableViewController {
     // MARK: - In-App Purchase Methods
     
     func buyPremiumQuotes() {
+        if SKPaymentQueue.canMakePayments() {
+            let paymentRequest = SKMutablePayment()
+            paymentRequest.productIdentifier = productID
+            SKPaymentQueue.default().add(paymentRequest)
+        } else {
+            print("User can't make payment")
+        }
         
     }
     
