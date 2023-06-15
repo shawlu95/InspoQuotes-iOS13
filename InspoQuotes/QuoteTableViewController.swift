@@ -34,11 +34,7 @@ class QuoteTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Uncomment the following line to preserve selection between presentations
-        // self.clearsSelectionOnViewWillAppear = false
-
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem
+        SKPaymentQueue.default().add(self)
     }
 
     // MARK: - Table view data source
@@ -84,5 +80,25 @@ class QuoteTableViewController: UITableViewController {
     }
     
     @IBAction func restorePressed(_ sender: UIBarButtonItem) {
+    }
+}
+
+extension QuoteTableViewController: SKPaymentTransactionObserver {
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            if transaction.transactionState == .purchased {
+                // user payment successful
+                print("Transaction successful!")
+                SKPaymentQueue.default().finishTransaction(transaction)
+            } else if transaction.transactionState == .failed {
+                // payment failed
+                print("Transaction failed!")
+                if let error = transaction.error {
+                    let errorDescription = error.localizedDescription
+                    print("Transaction failed due to error \(errorDescription)")
+                }
+                SKPaymentQueue.default().finishTransaction(transaction)
+            }
+        }
     }
 }
