@@ -35,12 +35,22 @@ class QuoteTableViewController: UITableViewController {
         super.viewDidLoad()
 
         SKPaymentQueue.default().add(self)
+        
+        if isPurchased() {
+            showPremiumQuotes()
+        }
+    }
+    
+    func isPurchased() -> Bool {
+        return UserDefaults.standard.bool(forKey: productID)
     }
 
     // MARK: - Table view data source
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+        if isPurchased() {
+            return quotesToShow.count
+        }
         return quotesToShow.count + 1
     }
 
@@ -93,6 +103,7 @@ extension QuoteTableViewController: SKPaymentTransactionObserver {
                 print("Transaction successful!")
                 SKPaymentQueue.default().finishTransaction(transaction)
                 showPremiumQuotes()
+                UserDefaults.standard.set(true, forKey: productID)
             } else if transaction.transactionState == .failed {
                 // payment failed
                 print("Transaction failed!")
