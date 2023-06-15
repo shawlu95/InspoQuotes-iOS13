@@ -48,6 +48,8 @@ class QuoteTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "QuoteCell", for: indexPath)
         if indexPath.row < quotesToShow.count {
             cell.textLabel?.text = quotesToShow[indexPath.row]
+            cell.textLabel?.textColor = .black
+            cell.accessoryType = .none
             cell.textLabel?.numberOfLines = 0
         } else {
             cell.textLabel?.text = "Get more quotes"
